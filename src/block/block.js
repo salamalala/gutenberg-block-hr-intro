@@ -13,83 +13,69 @@ const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks;
 
 const {
+	RichText,
+	PlainText,
 	AlignmentToolbar,
-	BlockControls,
-	InnerBlocks
+	BlockControls
 } = wp.editor;
 
-const TEMPLATE = [
-	[ 'core/paragraph', { placeholder: 'Enter side content...' } ],
-	[ 'core/button' ]
-];
+const { Button } = wp.components;
 
-/**
- * Register: aa Gutenberg Block.
- *
- * Registers a new block provided a unique name and an object defining its
- * behavior. Once registered, the block is made editor as an option to any
- * editor interface where blocks are implemented.
- *
- * @link https://wordpress.org/gutenberg/handbook/block-api/
- * @param  {string}   name     Block name.
- * @param  {Object}   settings Block settings.
- * @return {?WPBlock}          The block, if it has been successfully
- *                             registered; otherwise `undefined`.
- */
+
 registerBlockType( 'cgb/block-homepage-intro', {
-	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'Homepage Intro' ), // Block title.
-	icon: 'controls-play', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'hr-home-blocks', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+
+	title: __( 'Homepage Intro' ),
+	icon: 'controls-play',
+	category: 'hr-home-blocks',
 	keywords: [
 		__( 'Homepage Intro' ),
 		__( 'Homepage' ),
 	],
 
+
 	attributes: {
-    alignment: {
+	  blockText: {
+			type: 'string',
+	    source: 'text',
+	    selector: '.intro-block__title'
+	  },
+		alignment: {
       type: 'string',
     },
-  },
+	},
+
 
 	edit: ( { attributes, className, setAttributes } ) => {
-		// const { className } = props;
-			// const { attributes: { categoryAlign }, setAttributes, isSelected } = props;
+
 		const { alignment } = attributes;
-		// function onChangeContent( newContent ) {
-    //         setAttributes( { content: newContent } );
-    //     }
-		// function onChangeAlignment( newAlignment ) {
-    //     setAttributes( { alignment: newAlignment } );
-    // }
+
 
 		return [
 			(
         <BlockControls key="controls">
             <AlignmentToolbar
                 value={alignment}
-                onChange={( nextAlign ) => {
-                    setAttributes( { alignment: nextAlign } );
-                }}
+                onChange={( nextAlign ) => { setAttributes( { alignment: nextAlign } );} }
             />
         </BlockControls>
       ),
-			<div className={ className }>
-
-			 	 <InnerBlocks
-				 		template={TEMPLATE}
-						templateLock="all"
+			<div className={className}>
+				 <PlainText
+				 		value={ attributes.blockText}
+    				placeholder="Your intro text"
+    				className="heading"
+						onChange={ content => setAttributes({ blockText: content }) }
 				 />
-			</div>
+ 		 	</div>
 		];
 	},
 
-	save: function( props ) {
+	save: ({ attributes }) => {
 		return (
-			<div>
-      	<InnerBlocks.Content />
-    	</div>
-		);
+	    <div className="card">
+        <p className="card__text">{ attributes.blockText }</p>
+	    </div>
+  	);
 	},
 
 	supports: {
