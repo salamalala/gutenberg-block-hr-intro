@@ -46,9 +46,14 @@ registerBlockType( 'cgb/block-homepage-intro', {
 		url: {
 			type: 'string'
 		},
-		urlText: {
+		text: {
 			type: 'string'
-		}
+		},
+		buttonText: {
+			type: 'string',
+	    source: 'text',
+	    selector: '.intro-block__title'
+	  },
 	},
 
 
@@ -73,11 +78,22 @@ registerBlockType( 'cgb/block-homepage-intro', {
 					className="heading"
 					onChange={ content => setAttributes({ blockText: content }) }
 				/>
+ 		 	</div>,
+			<div className={className}>
 				<URLInputButton
 					url= { attributes.url }
-					onChange={ ( url, post ) => setAttributes( { url, urlText: (post && post.title) || 'Click here' } ) }
+					value={ attributes.url }
+					placeholder="Your url text"
+					onChange={ ( url, post ) => setAttributes( { url, text: (post && post.title) || 'Click here' } ) }
+					// onChange={ ( url, post ) => setAttributes( { url, urlText: (post && post.title) || 'Click here' } ) }
 				/>
- 		 	</div>
+				<PlainText
+					value={ attributes.buttonText}
+					placeholder="Button Text"
+					className="heading"
+					onChange={ content => setAttributes({ buttonText: content }) }
+				/>
+			</div>
 		];
 	},
 
@@ -85,7 +101,7 @@ registerBlockType( 'cgb/block-homepage-intro', {
 		return (
 	    <div className="card">
         <p className="card__text">{ attributes.blockText }</p>
-				<a href={ attributes.url }>{ attributes.urlText }</a>
+				<a href={ attributes.url }>{ attributes.buttonText }</a>
 	    </div>
   	);
 	},
