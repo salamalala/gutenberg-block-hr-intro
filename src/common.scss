@@ -5,9 +5,12 @@
  * that are used across the project.
 */
 
-// Colors.
-$black: rgb(41, 41, 41);
-$white: #f4f4f4;
-$gray: #dedede;
-$green: #bada55;
-$red: orangered;
+.wp-block-cgb-block-homepage-intro {
+  text-align: center;
+}
+
+.site-wrapper {
+  max-width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+}

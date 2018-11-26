@@ -38,14 +38,14 @@ registerBlockType( 'cgb/block-homepage-intro', {
 
 
 	attributes: {
+		alignment: {
+			type: 'string',
+		},
 	  blockText: {
 			type: 'string',
 	    source: 'text',
 	    selector: '.intro-block__title'
 	  },
-		alignment: {
-      type: 'string',
-    },
 		url: {
 			type: 'string'
 		},
@@ -55,7 +55,7 @@ registerBlockType( 'cgb/block-homepage-intro', {
 		buttonText: {
 			type: 'string',
 	    source: 'text',
-	    selector: '.intro-block__title'
+	    selector: '.intro-block__text'
 	  },
 		backgroundColor: { // NEW attribute!
       type: 'string'
@@ -80,19 +80,11 @@ registerBlockType( 'cgb/block-homepage-intro', {
 			    </div>
 				</InspectorControls>
 			),
-			(
-        <BlockControls key="controls">
-            <AlignmentToolbar
-              value={alignment}
-              onChange={( nextAlign ) => { setAttributes( { alignment: nextAlign } );} }
-            />
-        </BlockControls>
-      ),
 			<div className={className} style= {{backgroundColor: attributes.backgroundColor}}>
 					<PlainText
 						value={ attributes.blockText}
 						placeholder="Your intro text"
-						className="heading"
+						className={`${className}__text`}
 						onChange={ content => setAttributes({ blockText: content }) }
 					/>
 					<URLInputButton
@@ -112,9 +104,11 @@ registerBlockType( 'cgb/block-homepage-intro', {
 
 	save: ({ attributes }) => {
 		return (
-	    <div className="card" style= {{backgroundColor: attributes.backgroundColor}}>
-        <p className="card__text">{ attributes.blockText }</p>
-				<a href={ attributes.url }>{ attributes.buttonText }</a>
+	    <div className='homepage-intro' style= {{backgroundColor: attributes.backgroundColor}}>
+				<div className='site-wrapper'>
+	        <p className='homepage-intro__text'>{ attributes.blockText }</p>
+					<a href={ attributes.url } className='homepage-intro__button'>{ attributes.buttonText }</a>
+				</div>
 	    </div>
   	);
 	},

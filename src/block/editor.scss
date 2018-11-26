@@ -6,10 +6,10 @@
  */
 
 .wp-block-cgb-block-homepage-intro  {
-  // background: $green;
-  // border: 0.2rem solid $black;
-  // color: $black;
-  // margin: 0 auto;
-  // max-width: 740px;
-  // padding: 2rem;
+  padding: 2rem;
+
+  textarea {
+    text-align: center;
+    background-color: transparent;
+  }
 }

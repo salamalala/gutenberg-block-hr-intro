@@ -4,8 +4,18 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.wp-block-cgb-block-homepage-intro {
+  text-align: center; }
+
+.site-wrapper {
+  max-width: 90vw;
+  margin-left: auto;
+  margin-right: auto; }
+
 /**
  * #.# Styles
  *
  * CSS for both Frontend+Backend.
  */
+.wp-block-cgb-block-homepage-intro p {
+  font-size: 56.25px; }
