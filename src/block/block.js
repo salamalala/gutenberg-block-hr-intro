@@ -17,13 +17,16 @@ const {
 	PlainText,
 	URLInputButton,
 	AlignmentToolbar,
-	BlockControls
+	BlockControls,
+	InspectorControls,
+	ColorPalette
 } = wp.editor;
 
 const { Button } = wp.components;
 
 
 registerBlockType( 'cgb/block-homepage-intro', {
+
 
 	title: __( 'Homepage Intro' ),
 	icon: 'controls-play',
@@ -46,7 +49,7 @@ registerBlockType( 'cgb/block-homepage-intro', {
 		url: {
 			type: 'string'
 		},
-		text: {
+		urlText: {
 			type: 'string'
 		},
 		buttonText: {
@@ -54,52 +57,62 @@ registerBlockType( 'cgb/block-homepage-intro', {
 	    source: 'text',
 	    selector: '.intro-block__title'
 	  },
+		backgroundColor: { // NEW attribute!
+      type: 'string'
+    }
 	},
 
 
-	edit: ( { attributes, className, setAttributes } ) => {
+	edit: ( { attributes, className, setAttributes, focus } ) => {
 
 		const { alignment } = attributes;
 
 
 		return [
 			(
+				<InspectorControls>
+			    <div>
+		        <h2>Select a Background color:</h2>
+		        <ColorPalette
+							value={attributes.backgroundColor}
+							onChange={( color ) => { setAttributes( { backgroundColor : color }); }}
+						/>
+			    </div>
+				</InspectorControls>
+			),
+			(
         <BlockControls key="controls">
             <AlignmentToolbar
-                value={alignment}
-                onChange={( nextAlign ) => { setAttributes( { alignment: nextAlign } );} }
+              value={alignment}
+              onChange={( nextAlign ) => { setAttributes( { alignment: nextAlign } );} }
             />
         </BlockControls>
       ),
-			<div className={className}>
-				<PlainText
-					value={ attributes.blockText}
-					placeholder="Your intro text"
-					className="heading"
-					onChange={ content => setAttributes({ blockText: content }) }
-				/>
- 		 	</div>,
-			<div className={className}>
-				<URLInputButton
-					url= { attributes.url }
-					value={ attributes.url }
-					placeholder="Your url text"
-					onChange={ ( url, post ) => setAttributes( { url, text: (post && post.title) || 'Click here' } ) }
-					// onChange={ ( url, post ) => setAttributes( { url, urlText: (post && post.title) || 'Click here' } ) }
-				/>
-				<PlainText
-					value={ attributes.buttonText}
-					placeholder="Button Text"
-					className="heading"
-					onChange={ content => setAttributes({ buttonText: content }) }
-				/>
+			<div className={className} style= {{backgroundColor: attributes.backgroundColor}}>
+					<PlainText
+						value={ attributes.blockText}
+						placeholder="Your intro text"
+						className="heading"
+						onChange={ content => setAttributes({ blockText: content }) }
+					/>
+					<URLInputButton
+						url= { attributes.url }
+						placeholder="Your url text"
+						onChange={ ( url, post ) => setAttributes( { url, urlText: (post && post.title) || 'Click here' } ) }
+					/>
+					<PlainText
+						value={ attributes.buttonText}
+						placeholder="Button Text"
+						className="heading"
+						onChange={ content => setAttributes({ buttonText: content }) }
+					/>
 			</div>
 		];
 	},
 
 	save: ({ attributes }) => {
 		return (
-	    <div className="card">
+	    <div className="card" style= {{backgroundColor: attributes.backgroundColor}}>
         <p className="card__text">{ attributes.blockText }</p>
 				<a href={ attributes.url }>{ attributes.buttonText }</a>
 	    </div>
