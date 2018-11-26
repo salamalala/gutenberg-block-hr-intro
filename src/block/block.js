@@ -15,6 +15,7 @@ const { registerBlockType } = wp.blocks;
 const {
 	RichText,
 	PlainText,
+	URLInputButton,
 	AlignmentToolbar,
 	BlockControls
 } = wp.editor;
@@ -42,6 +43,12 @@ registerBlockType( 'cgb/block-homepage-intro', {
 		alignment: {
       type: 'string',
     },
+		url: {
+			type: 'string'
+		},
+		urlText: {
+			type: 'string'
+		}
 	},
 
 
@@ -60,12 +67,16 @@ registerBlockType( 'cgb/block-homepage-intro', {
         </BlockControls>
       ),
 			<div className={className}>
-				 <PlainText
-				 		value={ attributes.blockText}
-    				placeholder="Your intro text"
-    				className="heading"
-						onChange={ content => setAttributes({ blockText: content }) }
-				 />
+				<PlainText
+					value={ attributes.blockText}
+					placeholder="Your intro text"
+					className="heading"
+					onChange={ content => setAttributes({ blockText: content }) }
+				/>
+				<URLInputButton
+					url= { attributes.url }
+					onChange={ ( url, post ) => setAttributes( { url, urlText: (post && post.title) || 'Click here' } ) }
+				/>
  		 	</div>
 		];
 	},
@@ -74,6 +85,7 @@ registerBlockType( 'cgb/block-homepage-intro', {
 		return (
 	    <div className="card">
         <p className="card__text">{ attributes.blockText }</p>
+				<a href={ attributes.url }>{ attributes.urlText }</a>
 	    </div>
   	);
 	},
